@@ -17,7 +17,7 @@ class DisguiseSession {
         $this->startDisguise();
     }
     public function startDisguise(){
-        $pk = new RemovePlayerPacket;
+        $pk = new RemoveObjectivePacket;
         $pk->eid = $this->p->getID();
         $pk->clientID = 0;
 
