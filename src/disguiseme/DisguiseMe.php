@@ -123,7 +123,7 @@ class DisguiseMe extends PluginBase implements Listener, CommandExecutor{
                       $event->getPlayer()->dataPacket($pk);
                       $event->setCancelled();
               }
-              elseif($event->getPacket() instanceof RemovePlayerPacket){
+              elseif($event->getPacket() instanceof RemoveObjectivePacket){
                       $pk = new RemoveEntityPacket;
                       $pk->eid = $event->getPacket()->eid;
                       $event->getPlayer()->dataPacket($pk);
