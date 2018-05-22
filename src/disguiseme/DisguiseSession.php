@@ -4,7 +4,7 @@ namespace disguiseme;
 
 
 use pocketmine\network\mcpe\protocol\AddMobPacket;
-use pocketmine\network\mcpe\protocol\RemovePlayerPacket;
+use pocketmine\network\mcpe\protocol\RemoveObjectivePacket;
 use pocketmine\network\mcpe\protocol\SetEntityMotionPacket;
 use pocketmine\Player;
 use pocketmine\Server;
