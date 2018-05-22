@@ -7,12 +7,12 @@ use pocketmine\command\CommandSender;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\server\DataPacketSendEvent;
-use pocketmine\network\protocol\AddMobPacket;
-use pocketmine\network\protocol\AddPlayerPacket;
-use pocketmine\network\protocol\MoveEntityPacket;
-use pocketmine\network\protocol\MovePlayerPacket;
-use pocketmine\network\protocol\RemoveEntityPacket;
-use pocketmine\network\protocol\RemovePlayerPacket;
+use pocketmine\network\mcpe\protocol\AddMobPacket;
+use pocketmine\network\mcpe\protocol\AddPlayerPacket;
+use pocketmine\network\mcpe\protocol\MoveEntityPacket;
+use pocketmine\network\mcpe\protocol\MovePlayerPacket;
+use pocketmine\network\mcpe\protocol\RemoveEntityPacket;
+use pocketmine\network\mcpe\protocol\RemovePlayerPacket;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 
@@ -26,42 +26,42 @@ class DisguiseMe extends PluginBase implements Listener, CommandExecutor{
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $this->mobStore = new MobStore($this);
     }
-    public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
+    public function onCommand(CommandSender $sender, Command $cmd, string $label, array $args): bool{
         if(isset($args[1])){
             if($sender->hasPermission("disguiseme.other")){
                 if(($p = $this->getServer()->getPlayer($args[1])) instanceof Player){
                     if($this->isDisguised($p->getID())){
                         $this->destroyDisguise($p->getID());
-                        $sender->sendMessage("Disguise closed for " . $p->getName());
-                        $p->sendMessage("Your disguise has been closed.");
+                        $sender->sendMessage("§dDisguise closed for §5" . $p->getName());
+                        $p->sendMessage("§dYour disguise has been closed.");
                         return true;
                     }
                     else{
                         if(is_numeric($args[0])) {
                             $s = new DisguiseSession($p, $args[0]);
                             $this->e[$p->getID()] = $s;
-                            $sender->sendMessage("Disguise activated for " . $p->getName());
-                            $p->sendMessage("You now have a disguise.");
+                            $sender->sendMessage("§dDisguise activated for §5" . $p->getName());
+                            $p->sendMessage("§dYou now have a disguise.");
                         }
                         elseif(($mob = $this->getMobStore()->getMobId($args[0])) !== false){
                             $s = new DisguiseSession($p, $mob);
                             $this->e[$p->getID()] = $s;
-                            $sender->sendMessage("Disguise activated for " . $p->getName());
-                            $p->sendMessage("You now have a disguise.");
+                            $sender->sendMessage("§dDisguise activated for §5" . $p->getName());
+                            $p->sendMessage("§dYou now have a disguise.");
                         }
                         else{
-                            $sender->sendMessage("No mob found with that name.");
+                            $sender->sendMessage("§cNo mob found with that name.");
                         }
                         return true;
                     }
                 }
                 else{
-                    $sender->sendMessage("Player not found.");
+                    $sender->sendMessage("§cPlayer not found.");
                     return true;
                 }
             }
             else{
-                $sender->sendMessage("You do not have permission to disguise others.");
+                $sender->sendMessage("§cYou do not have permission to disguise others.");
                 return true;
             }
         }
@@ -69,7 +69,7 @@ class DisguiseMe extends PluginBase implements Listener, CommandExecutor{
             if($sender instanceof Player){
                 if($this->isDisguised($sender->getID())){
                     $this->destroyDisguise($sender->getID());
-                    $sender->sendMessage("Disguise closed.");
+                    $sender->sendMessage("§dDisguise closed.");
                     return true;
                 }
                 else{
@@ -77,26 +77,26 @@ class DisguiseMe extends PluginBase implements Listener, CommandExecutor{
                         if(is_numeric($args[0])) {
                             $s = new DisguiseSession($sender, $args[0]);
                             $this->e[$sender->getID()] = $s;
-                            $sender->sendMessage("Disguise activated.");
+                            $sender->sendMessage("§dDisguise activated.");
                         }
                         elseif(($mob = $this->getMobStore()->getMobId($args[0])) !== false){
                             $s = new DisguiseSession($sender, $mob);
                             $this->e[$sender->getID()] = $s;
-                            $sender->sendMessage("Disguise activated.");
+                            $sender->sendMessage("§dDisguise activated.");
                         }
                         else{
-                            $sender->sendMessage("No mob found with that name.");
+                            $sender->sendMessage("§cNo mob found with that name.");
                         }
                         return true;
                     }
                     else{
-                        $sender->sendMessage("You need to specify a mob.");
+                        $sender->sendMessage("§cYou need to specify a mob.");
                         return true;
                     }
                 }
             }
             else{
-                $sender->sendMessage("You need to specify a player.");
+                $sender->sendMessage("§cYou need to specify a player.");
                 return true;
             }
         }
