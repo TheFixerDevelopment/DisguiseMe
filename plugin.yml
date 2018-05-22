@@ -2,7 +2,7 @@ name: DisguiseMe
 main: disguiseme\DisguiseMe
 version: 2.1.0
 author: Falkirks
-api: 3.0.0-ALPHA7
+api: [3.0.0-ALPHA11, 3.0.0-ALPHA12]
 load: POSTWORLD
 
 commands:
